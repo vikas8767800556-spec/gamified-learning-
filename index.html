@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Welcome to Gamified Learning</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: url("{{ url_for('static', filename='images/welcome.png') }}") no-repeat center center fixed;
+      background-size: cover;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    .auth-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      padding: 10px 20px;
+      background: linear-gradient(135deg, #ff4081, #7c4dff);
+      border: none;
+      border-radius: 12px;
+      color: #fff;
+      font-size: 16px;
+      text-decoration: none;
+      font-weight: bold;
+      box-shadow: 0 0 15px #ff4081;
+      transition: 0.3s;
+      backdrop-filter: blur(6px);
+      z-index: 1000;
+    }
+
+    .auth-btn:hover {
+      background: linear-gradient(135deg, #f50057, #651fff);
+      box-shadow: 0 0 25px #ff4081;
+      transform: scale(1.05);
+    }
+
+    .welcome-box {
+      background: rgba(255, 255, 255, 0.85);
+      padding: 40px 60px;
+      border-radius: 25px;
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
+      text-align: center;
+      animation: fadeIn 1.5s ease-out;
+      backdrop-filter: blur(6px);
+      z-index: 2;
+    }
+
+    .welcome-box h1 {
+      font-size: 52px;
+      color: #7b1fa2;
+      margin-bottom: 10px;
+      text-shadow: 2px 2px 4px #fff;
+    }
+
+    .welcome-box p {
+      font-size: 22px;
+      color: #4e342e;
+      margin-bottom: 30px;
+    }
+
+    .start-button {
+      padding: 15px 40px;
+      font-size: 22px;
+      background-color: #ff7043;
+      color: white;
+      border: none;
+      border-radius: 14px;
+      cursor: pointer;
+      transition: 0.3s;
+      box-shadow: 0 0 10px #ff7043;
+    }
+
+    .start-button:hover {
+      background-color: #f4511e;
+      box-shadow: 0 0 20px #ff7043;
+    }
+
+    .mascot {
+      position: absolute;
+      top: 30px;
+      left: 30px;
+      height: 120px;
+      animation: float 3s ease-in-out infinite;
+      z-index: 3;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+      100% { transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 600px) {
+      .welcome-box {
+        width: 85%;
+        padding: 25px;
+      }
+      .welcome-box h1 {
+        font-size: 36px;
+      }
+      .welcome-box p {
+        font-size: 18px;
+      }
+      .start-button {
+        font-size: 18px;
+        padding: 12px 25px;
+      }
+      .mascot {
+        height: 90px;
+        top: 15px;
+        left: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 🔐 Login or 🔓 Logout Button -->
+  {% if session.get('user_id') %}
+    <a href="{{ url_for('logout') }}" class="auth-btn">Logout 🔓</a>
+  {% else %}
+    <a href="{{ url_for('login') }}" class="auth-btn">Login 🔐</a>
+  {% endif %}
+
+  <!-- Background Music -->
+  <audio autoplay loop muted>
+    <source src="{{ url_for('static', filename='sounds/magic-intro.mp3') }}" type="audio/mpeg">
+  </audio>
+
+  <!-- Mascot -->
+  <img src="{{ url_for('static', filename='images/mascot.png') }}" alt="Mascot" class="mascot">
+
+  <!-- Welcome Box -->
+  <div class="welcome-box">
+    <h1>🎮 Gamified Learning</h1>
+    {% if email %}
+      <p style="font-size:18px; color:#6a1b9a;">👋 Welcome, {{ email }}!</p>
+    {% endif %}
+    <p>"Start your adventure into a magical world of learning!"</p>
+    <button class="start-button" onclick="playSoundAndGo()">Start Learning</button>
+  </div>
+
+  <!-- JS for Button Sound + Audio Unmute -->
+  <script>
+    document.body.addEventListener('click', () => {
+      const bgMusic = document.querySelector('audio');
+      if (bgMusic.muted) {
+        bgMusic.muted = false;
+        bgMusic.play().catch(() => {});
+      }
+    });
+
+    function playSoundAndGo() {
+      const clickSound = new Audio('{{ url_for("static", filename="sounds/start-click.mp3") }}');
+      clickSound.play();
+      setTimeout(() => {
+        window.location.href = '/menu';
+      }, 300);
+    }
+  </script>
+</body>
+</html>
