@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Gamified Menu</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #7b1fa2, #512da8, #303f9f);
+      background-size: 400% 400%;
+      animation: gradientFlow 8s ease infinite;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: #fff;
+      overflow: hidden;
+    }
+
+    @keyframes gradientFlow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    h1 {
+      font-size: 52px;
+      text-shadow: 3px 3px 10px #000;
+      margin-bottom: 60px;
+      animation: fadeInDown 1.2s ease-out;
+      color: #ffeb3b;
+    }
+
+    .menu-container {
+      display: flex;
+      gap: 50px;
+      flex-wrap: wrap;
+      justify-content: center;
+      animation: fadeInUp 1.5s ease-in;
+    }
+
+    .menu-item {
+      background: linear-gradient(145deg, #ff7043, #ffb74d);
+      border: none;
+      border-radius: 25px;
+      padding: 60px 80px;
+      color: white;
+      font-size: 30px;
+      text-shadow: 2px 2px 5px #000;
+      cursor: pointer;
+      transition: 0.4s ease;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .menu-item::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -75%;
+      width: 50%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.3);
+      transform: skewX(-25deg);
+      transition: 0.5s;
+    }
+
+    .menu-item:hover::before {
+      left: 125%;
+    }
+
+    .menu-item:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 25px #ffca28;
+      background: linear-gradient(145deg, #ff9800, #ff5722);
+    }
+
+    .sparkle {
+      position: absolute;
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 50%;
+      animation: floatUp 8s linear infinite;
+      opacity: 0.6;
+    }
+
+    @keyframes floatUp {
+      0% {
+        transform: translateY(100vh) scale(0.5);
+        opacity: 0.3;
+      }
+      50% { opacity: 0.7; }
+      100% {
+        transform: translateY(-10vh) scale(1);
+        opacity: 0;
+      }
+    }
+
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 34px;
+        margin-bottom: 30px;
+      }
+      .menu-item {
+        padding: 35px 45px;
+        font-size: 22px;
+      }
+      .menu-container {
+        gap: 25px;
+      }
+    }
+
+    .back-btn {
+      position: absolute;
+      top: 25px;
+      left: 25px;
+      padding: 10px 20px;
+      background: rgba(255, 255, 255, 0.15);
+      border: 2px solid #fff;
+      border-radius: 12px;
+      color: #fff;
+      font-size: 18px;
+      cursor: pointer;
+      transition: 0.3s;
+      backdrop-filter: blur(4px);
+    }
+
+    .back-btn:hover {
+      background: rgba(255, 255, 255, 0.35);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sparkles -->
+  <div class="sparkle" style="width:10px;height:10px;left:10%;animation-delay:0s;"></div>
+  <div class="sparkle" style="width:8px;height:8px;left:40%;animation-delay:2s;"></div>
+  <div class="sparkle" style="width:12px;height:12px;left:70%;animation-delay:4s;"></div>
+  <div class="sparkle" style="width:9px;height:9px;left:85%;animation-delay:1s;"></div>
+
+  <!-- Background Music -->
+  <audio autoplay loop muted id="menuMusic">
+    <source src="{{ url_for('static', filename='sounds/menu-music.mp3') }}" type="audio/mpeg">
+  </audio>
+
+  <!-- Back to Welcome -->
+  <button class="back-btn" onclick="window.location.href='/'">⬅ Back</button>
+
+  <!-- Title -->
+  <h1>🌟 Choose Your Adventure 🌟</h1>
+
+  <!-- Menu Options -->
+  <div class="menu-container">
+    <div class="menu-item" onclick="navigateWithSound('/learn')">🎓 Learn</div>
+    <div class="menu-item" onclick="navigateWithSound('/play')">🎮 Play</div>
+    <div class="menu-item" onclick="navigateWithSound('/quiz')">🧩 Quiz</div>
+  </div>
+
+  <script>
+    document.body.addEventListener('click', () => {
+      const music = document.getElementById('menuMusic');
+      if (music.muted) {
+        music.muted = false;
+        music.play().catch(() => {});
+      }
+    });
+
+    function navigateWithSound(path) {
+      const clickSound = new Audio('{{ url_for("static", filename="sounds/start-click.mp3") }}');
+      clickSound.play();
+      setTimeout(() => {
+        window.location.href = path;
+      }, 300);
+    }
+  </script>
+
+</body>
+</html>

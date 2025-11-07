@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Learn About Water Pollution 🌊</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #74ebd5, #ACB6E5);
+      font-family: 'Poppins', sans-serif;
+      color: #333;
+      text-align: center;
+      overflow-x: hidden;
+    }
+    header {
+      background-color: #0288d1;
+      color: white;
+      padding: 20px;
+      font-size: 32px;
+      font-weight: 700;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      text-shadow: 2px 2px 4px #004c8c;
+    }
+    .page-container {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      margin: 40px 20px;
+      gap: 20px;
+    }
+
+    /* Left and right info panels */
+    .side-info {
+      width: 22%;
+      background: rgba(255, 255, 255, 0.85);
+      padding: 20px;
+      border-radius: 20px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+      font-size: 17px;
+      color: #01579b;
+      line-height: 1.6;
+      font-weight: 500;
+    }
+
+    .side-info h3 {
+      color: #0277bd;
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+
+    /* Main center content */
+    .main-content {
+      width: 50%;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 25px;
+      padding: 30px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+      animation: fadeIn 1.2s ease;
+    }
+
+    h2 { color: #0277bd; font-size: 28px; margin-top: 10px; }
+    p { font-size: 20px; color: #424242; line-height: 1.6; }
+
+    .img-grid {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin: 25px 0;
+    }
+
+    .img-grid img {
+      width: 250px;
+      height: 180px;
+      border-radius: 15px;
+      cursor: pointer;
+      transition: 0.3s;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    .img-grid img:hover {
+      transform: scale(1.05);
+    }
+
+    .fact-box {
+      display: none;
+      background: #e1f5fe;
+      border-left: 6px solid #0288d1;
+      padding: 15px;
+      border-radius: 10px;
+      font-size: 18px;
+      margin-top: 20px;
+      animation: pop 0.4s ease;
+    }
+
+    @keyframes pop {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .quiz-button {
+      background-color: #ff7043;
+      color: white;
+      padding: 15px 35px;
+      border: none;
+      border-radius: 14px;
+      font-size: 20px;
+      cursor: pointer;
+      margin-top: 25px;
+      transition: 0.3s;
+      box-shadow: 0 0 10px #ff7043;
+    }
+
+    .quiz-button:hover {
+      background-color: #f4511e;
+      box-shadow: 0 0 20px #ff7043;
+      transform: scale(1.05);
+    }
+
+    footer {
+      margin-top: 50px;
+      padding: 15px;
+      background-color: #0288d1;
+      color: white;
+      font-size: 18px;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+<header>🌊 Learn About Water Pollution</header>
+
+<div class="page-container">
+  
+  <!-- Left side info -->
+  <div class="side-info">
+    <h3>💧 Did You Know?</h3>
+    <p>Nearly <b>80% of wastewater</b> worldwide flows back into nature untreated.</p>
+    <p>Every year, <b>8 million tons of plastic</b> end up in our oceans.</p>
+    <p>Polluted water can cause diseases like cholera and typhoid.</p>
+    <p>Even tiny microplastics are now found in drinking water.</p>
+  </div>
+
+  <!-- Main content (center) -->
+  <div class="main-content">
+    <h2>What is Water Pollution?</h2>
+    <p>
+      Water pollution happens when harmful substances like plastic, chemicals, and waste mix into our lakes, rivers, and oceans.
+      It makes water unsafe for drinking and harms the animals who live in it.
+    </p>
+
+    <div class="img-grid">
+      <img src="{{ url_for('static', filename='images/plastic_in_water.png') }}" alt="Plastic Pollution" onclick="showFact(1)">
+      <img src="{{ url_for('static', filename='images/dirty_river.png') }}" alt="Dirty River" onclick="showFact(2)">
+      <img src="{{ url_for('static', filename='images/fish_help.png') }}" alt="Fish Help" onclick="showFact(3)">
+    </div>
+
+    <div id="fact1" class="fact-box">🐢 Plastic bottles and bags can choke turtles and fish. Always use reusable bottles!</div>
+    <div id="fact2" class="fact-box">🏭 Dirty water from factories can harm rivers. Support clean and green industries!</div>
+    <div id="fact3" class="fact-box">🐠 When we keep water clean, fishes stay healthy — and so do we! 💧</div>
+
+    <button class="quiz-button" onclick="window.location.href='{{ url_for('quiz_water') }}'">
+      🧠 Take Water Quiz ➡
+    </button>
+  </div>
+
+  <!-- Right side info -->
+  <div class="side-info">
+    <h3>🌍 How Can We Help?</h3>
+    <p>✅ Don’t throw waste or plastic into rivers or drains.</p>
+    <p>✅ Reuse and recycle items to reduce pollution.</p>
+    <p>✅ Support cleanup drives for beaches and lakes.</p>
+    <p>✅ Plant trees — they help prevent soil and water pollution!</p>
+    <p>✅ Spread awareness about saving clean water.</p>
+  </div>
+
+</div>
+
+<footer>© 2025 Gamified Learning | Together for a Cleaner Planet 🌎</footer>
+
+<script>
+function showFact(num) {
+  document.querySelectorAll('.fact-box').forEach(box => box.style.display = 'none');
+  document.getElementById('fact' + num).style.display = 'block';
+}
+</script>
+
+</body>
+</html>

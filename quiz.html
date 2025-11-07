@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>🌍 Environmental Quiz Adventure</title>
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    font-family: "Poppins", sans-serif;
+    background: linear-gradient(270deg, #89f7fe, #66a6ff, #fddb92, #d1fdff);
+    background-size: 800% 800%;
+    animation: gradientBG 15s ease infinite;
+    overflow-x: hidden;
+  }
+
+  @keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  h1 {
+    margin-top: 30px;
+    font-size: 42px;
+    color: #004d40;
+    text-shadow: 2px 2px 6px rgba(255,255,255,0.8);
+  }
+
+  #start-btn {
+    background: linear-gradient(90deg, #42a5f5, #1e88e5);
+    color: white;
+    border: none;
+    font-size: 22px;
+    padding: 14px 35px;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  #start-btn:hover { transform: scale(1.05); background: #01579b; }
+
+  #quiz-box {
+    display: none;
+    background: rgba(255, 255, 255, 0.9);
+    width: 70%;
+    margin: 30px auto;
+    border-radius: 25px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+    padding: 25px;
+    position: relative;
+  }
+
+  #level {
+    font-size: 22px;
+    font-weight: bold;
+    color: #2e7d32;
+    background: #c8e6c9;
+    padding: 10px 25px;
+    border-radius: 20px;
+    display: inline-block;
+    margin-bottom: 15px;
+  }
+
+  #timer {
+    font-size: 20px;
+    color: #d32f2f;
+    background: #fff3e0;
+    padding: 8px 15px;
+    border-radius: 12px;
+    display: inline-block;
+    animation: pulse 1s infinite;
+  }
+
+  @keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+  }
+
+  .question {
+    font-size: 26px;
+    font-weight: bold;
+    color: #01579b;
+    margin: 20px 0;
+  }
+
+  .options {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+  }
+
+  .option {
+    background: #e3f2fd;
+    border: 3px solid #0288d1;
+    border-radius: 15px;
+    width: 60%;
+    padding: 12px;
+    font-size: 20px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+
+  .option:hover {
+    background: #81d4fa;
+    transform: scale(1.05);
+  }
+
+  .next-btn {
+    background: linear-gradient(90deg, #42a5f5, #1e88e5);
+    color: white;
+    border: none;
+    font-size: 20px;
+    padding: 12px 30px;
+    margin-top: 25px;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+
+  .next-btn:hover {
+    background: #01579b;
+    transform: scale(1.05);
+  }
+
+  #motivation {
+    margin-top: 15px;
+    font-size: 22px;
+    font-weight: 600;
+    color: #00695c;
+    animation: fade 2s infinite alternate;
+  }
+
+  @keyframes fade {
+    0% { opacity: 0.6; }
+    100% { opacity: 1; }
+  }
+
+  #result-screen {
+    display: none;
+    background: #e8f5e9;
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    margin-top: 40px;
+  }
+
+  #result-screen h2 {
+    color: #2e7d32;
+    font-size: 32px;
+  }
+
+  #score { font-size: 26px; color: #004d40; }
+
+  #message { font-size: 22px; color: #1b5e20; margin-top: 15px; }
+
+  .restart-btn {
+    margin-top: 20px;
+    background-color: #43a047;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: 0.3s;
+  }
+
+  .restart-btn:hover { background-color: #1b5e20; }
+
+  footer {
+    margin-top: 40px;
+    font-size: 18px;
+    color: #004d40;
+    font-weight: bold;
+    text-shadow: 1px 1px 3px rgba(255,255,255,0.8);
+  }
+</style>
+</head>
+<body>
+
+<h1>🌟 Environmental Quiz Challenge</h1>
+<button id="start-btn">🚀 Start Quiz</button>
+
+<div id="quiz-box">
+  <div id="level">Level: Easy 🌱</div>
+  <div id="timer">⏳ Time Left: <span id="time">15</span>s</div>
+  <div class="question" id="question">Loading...</div>
+  <div class="options" id="options"></div>
+  <div id="motivation">💬 Let’s see how sharp you are!</div>
+  <button class="next-btn" onclick="nextQuestion()">Next ➡️</button>
+</div>
+
+<div id="result-screen">
+  <h2 id="result-title">🎉 Quiz Completed!</h2>
+  <p id="score"></p>
+  <p id="message"></p>
+  <button class="restart-btn" id="next-level-btn" onclick="nextLevel()">➡️ Next Level</button>
+  <button class="restart-btn" onclick="restartQuiz()">🔁 Restart</button>
+</div>
+
+<footer>🌍 Learn, Play & Protect Our Earth | You Are the Change 💚</footer>
+
+<script>
+const quizLevels = {
+  easy: [
+    { q: "🌊 Main cause of water pollution?", o: ["Plastic waste", "Rainwater", "Clouds", "Wind"], a: "Plastic waste" },
+    { q: "🌱 What reduces pollution?", o: ["Cutting trees", "Planting trees", "Burning plastic", "Using cars"], a: "Planting trees" },
+    { q: "🌫️ Harmful gas in air?", o: ["Oxygen", "Carbon monoxide", "Nitrogen", "Helium"], a: "Carbon monoxide" },
+    { q: "🌾 Best way to save water?", o: ["Let tap run", "Fix leaks", "Use hose always", "Ignore wastage"], a: "Fix leaks" },
+    { q: "☀️ Solar energy is?", o: ["Renewable", "Non-renewable", "Fossil fuel", "Polluting"], a: "Renewable" }
+  ],
+  medium: [
+    { q: "🪵 Deforestation leads to?", o: ["Clean air", "Soil erosion", "More rain", "Oxygen increase"], a: "Soil erosion" },
+    { q: "💨 Which gas causes global warming?", o: ["CO2", "Oxygen", "Helium", "Nitrogen"], a: "CO2" },
+    { q: "🌎 Which layer protects from UV?", o: ["Ozone", "Carbon", "Dust", "Water vapor"], a: "Ozone" },
+    { q: "🚗 Which fuel is eco-friendly?", o: ["Petrol", "Diesel", "CNG", "Coal"], a: "CNG" },
+    { q: "🌧️ Acid rain is due to?", o: ["SO2 & NOx gases", "CO2 only", "Dust", "Water vapor"], a: "SO2 & NOx gases" }
+  ]
+};
+
+let currentLevel = 'easy';
+let current = 0;
+let score = 0;
+let timer;
+let timeLeft = 15;
+
+let tickSound = new Audio("tick.mp3"); // your tick.mp3 file
+tickSound.volume = 0.6;
+tickSound.loop = true;
+
+const questionEl = document.getElementById("question");
+const optionsEl = document.getElementById("options");
+const timerEl = document.getElementById("time");
+const levelEl = document.getElementById("level");
+
+function loadQuestion() {
+  clearInterval(timer);
+  timeLeft = 15;
+  timerEl.textContent = timeLeft;
+
+  tickSound.currentTime = 0;
+  tickSound.play().catch(()=>console.log("Wait for user click to unlock sound"));
+
+  const q = quizLevels[currentLevel][current];
+  questionEl.textContent = q.q;
+  optionsEl.innerHTML = "";
+  q.o.forEach(opt => {
+    const div = document.createElement("div");
+    div.textContent = opt;
+    div.className = "option";
+    div.onclick = () => selectOption(div, opt);
+    optionsEl.appendChild(div);
+  });
+
+  timer = setInterval(() => {
+    timeLeft--;
+    timerEl.textContent = timeLeft;
+    if (timeLeft <= 0) {
+      clearInterval(timer);
+      tickSound.pause();
+      nextQuestion();
+    }
+  }, 1000);
+}
+
+function selectOption(element, selected) {
+  const q = quizLevels[currentLevel][current];
+  tickSound.pause();
+  const allOpts = [...optionsEl.children];
+  allOpts.forEach(opt => opt.onclick = null);
+
+  if (selected === q.a) {
+    element.style.backgroundColor = "#a5d6a7";
+    score++;
+    playSound("correct");
+  } else {
+    element.style.backgroundColor = "#ef9a9a";
+    playSound("wrong");
+    allOpts.forEach(opt => {
+      if (opt.textContent === q.a) opt.style.backgroundColor = "#a5d6a7";
+    });
+  }
+  clearInterval(timer);
+}
+
+function nextQuestion() {
+  current++;
+  if (current < quizLevels[currentLevel].length) loadQuestion();
+  else showResult();
+}
+
+function showResult() {
+  document.getElementById("quiz-box").style.display = "none";
+  const result = document.getElementById("result-screen");
+  result.style.display = "block";
+  tickSound.pause();
+  document.getElementById("score").textContent = `You scored ${score} / ${quizLevels[currentLevel].length}`;
+
+  const msg = document.getElementById("message");
+  const nextBtn = document.getElementById("next-level-btn");
+
+  if (score >= 3) {
+    msg.textContent = "🎉 Great job! Next level unlocked!";
+    nextBtn.style.display = "inline-block";
+  } else {
+    msg.textContent = "❌ Sorry! You need at least 3 correct answers to move to the next level.";
+    nextBtn.style.display = "none";
+  }
+}
+
+function restartQuiz() {
+  currentLevel = 'easy'; score = 0; current = 0;
+  document.getElementById("quiz-box").style.display = "block";
+  document.getElementById("result-screen").style.display = "none";
+  loadQuestion();
+}
+
+function nextLevel() {
+  if (currentLevel === 'easy') currentLevel = 'medium';
+  else alert("🎯 You completed all levels!");
+  score = 0;
+  current = 0;
+  document.getElementById("result-screen").style.display = "none";
+  document.getElementById("quiz-box").style.display = "block";
+  levelEl.textContent = `Level: ${currentLevel.charAt(0).toUpperCase()+currentLevel.slice(1)}`;
+  loadQuestion();
+}
+
+function playSound(type) {
+  const sounds = {
+    correct: "https://cdn.pixabay.com/audio/2022/03/15/audio_9f2d564b7d.mp3",
+    wrong: "https://cdn.pixabay.com/audio/2022/03/15/audio_9c2b6aee3b.mp3"
+  };
+  const s = new Audio(sounds[type]);
+  s.play();
+}
+
+document.getElementById("start-btn").addEventListener("click", async () => {
+  try {
+    await tickSound.play();
+    tickSound.pause();
+    tickSound.currentTime = 0;
+  } catch {}
+  document.getElementById("start-btn").style.display = "none";
+  document.getElementById("quiz-box").style.display = "block";
+  loadQuestion();
+});
+</script>
+</body>
+</html>

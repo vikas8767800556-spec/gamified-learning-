@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login Portal</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #4a148c, #6a1b9a, #7b1fa2);
+      background-size: 400% 400%;
+      animation: gradientFlow 10s ease infinite;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      overflow: hidden;
+      cursor: url('{{ url_for("static", filename="images/wand-cursor.png") }}'), auto;
+    }
+
+    @keyframes gradientFlow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .login-box {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 0 25px #fff;
+      backdrop-filter: blur(8px);
+      text-align: center;
+      animation: fadeIn 1.5s ease-out;
+      border: 4px solid;
+      border-image: linear-gradient(45deg, #ffeb3b, #ff5722, #00e5ff, #7c4dff) 1;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .mascot {
+      font-size: 28px;
+      margin-bottom: 20px;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    h2 {
+      font-size: 36px;
+      margin-bottom: 20px;
+      color: #ffeb3b;
+      text-shadow: 2px 2px 5px #000;
+    }
+
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 10px;
+      font-size: 18px;
+      box-shadow: 0 0 10px #ffca28;
+      background: rgba(255, 255, 255, 0.2);
+      color: #fff;
+      outline: none;
+    }
+
+    input::placeholder {
+      color: #eee;
+    }
+
+    button {
+      padding: 12px 30px;
+      font-size: 20px;
+      border: none;
+      border-radius: 12px;
+      background: linear-gradient(145deg, #ff9800, #ff5722);
+      color: white;
+      cursor: pointer;
+      box-shadow: 0 0 15px #ff9800;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 25px #ffca28;
+    }
+
+    .sparkle {
+      position: absolute;
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 50%;
+      animation: floatUp 8s linear infinite;
+      opacity: 0.6;
+    }
+
+    @keyframes floatUp {
+      0% { transform: translateY(100vh) scale(0.5); opacity: 0.3; }
+      50% { opacity: 0.7; }
+      100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+    }
+
+    @media (max-width: 600px) {
+      .login-box {
+        width: 90%;
+        padding: 30px;
+      }
+      h2 {
+        font-size: 28px;
+      }
+      button {
+        font-size: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sparkles -->
+  <div class="sparkle" style="width:10px;height:10px;left:10%;animation-delay:0s;"></div>
+  <div class="sparkle" style="width:8px;height:8px;left:40%;animation-delay:2s;"></div>
+  <div class="sparkle" style="width:12px;height:12px;left:70%;animation-delay:4s;"></div>
+  <div class="sparkle" style="width:9px;height:9px;left:85%;animation-delay:1s;"></div>
+
+  <!-- Background Music (optional) -->
+  <audio autoplay loop muted id="loginMusic">
+    <source src="{{ url_for('static', filename='sounds/login-magic.mp3') }}" type="audio/mpeg">
+  </audio>
+
+  <div class="login-box">
+    <div class="mascot">🧙‍♂️ “Welcome, young wizard! Let’s unlock your learning spell...”</div>
+    <h2>✨ Login to Your Magical World</h2>
+    <form method="POST" action="/login">
+      <input type="email" name="email" placeholder="🧭 Your enchanted email" required>
+      <input type="password" name="password" placeholder="🔒 Secret spell (password)" required>
+      <button type="submit">Enter Portal 🚪</button>
+    </form>
+  </div>
+
+  <script>
+    document.body.addEventListener('click', () => {
+      const music = document.getElementById('loginMusic');
+      if (music.muted) {
+        music.muted = false;
+        music.play().catch(() => {});
+      }
+    });
+  </script>
+
+</body>
+</html>

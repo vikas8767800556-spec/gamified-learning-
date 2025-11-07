@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>♻️ Waste Sorting Game</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Poppins", sans-serif;
+      text-align: center;
+      background: url('{{ url_for("static", filename="images/background_waste.png") }}') no-repeat center/cover;
+      overflow: hidden;
+    }
+
+    h1 {
+      margin-top: 20px;
+      color: #2e7d32;
+      text-shadow: 1px 1px 2px white;
+    }
+
+    #gameCanvas {
+      background: rgba(255,255,255,0.7);
+      border-radius: 15px;
+      display: block;
+      margin: 20px auto;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    }
+
+    #info {
+      font-size: 20px;
+      font-weight: bold;
+      color: #1b5e20;
+    }
+
+    #gameOver {
+      position: absolute;
+      top: 40%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(255,255,255,0.95);
+      padding: 30px 40px;
+      border-radius: 15px;
+      display: none;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+    }
+
+    button {
+      background: #4caf50;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #2e7d32;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>♻️ Waste Sorting Game</h1>
+  <div id="info">Score: <span id="score">0</span> | Miss: <span id="miss">0</span></div>
+  <canvas id="gameCanvas" width="400" height="500"></canvas>
+
+  <div id="gameOver">
+    <h2>Game Over 💥</h2>
+    <p>Your Final Score: <span id="finalScore"></span></p>
+    <button onclick="restartGame()">Play Again</button>
+  </div>
+
+  <script>
+    const canvas = document.getElementById("gameCanvas");
+    const ctx = canvas.getContext("2d");
+
+    // Images
+    const apple = new Image();
+    const bottle = new Image();
+    const paper = new Image();
+    const binOrganic = new Image();
+    const binPlastic = new Image();
+    const binPaper = new Image();
+
+    apple.src = "{{ url_for('static', filename='images/apple.png') }}";
+    bottle.src = "{{ url_for('static', filename='images/bottle.png') }}";
+    paper.src = "{{ url_for('static', filename='images/newspaper.png') }}";
+    binOrganic.src = "{{ url_for('static', filename='images/bin_organic.png') }}";
+    binPlastic.src = "{{ url_for('static', filename='images/bin_plastic.png') }}";
+    binPaper.src = "{{ url_for('static', filename='images/bin_paper.png') }}";
+
+    const wastes = [
+      { img: apple, type: "organic" },
+      { img: bottle, type: "plastic" },
+      { img: paper, type: "paper" }
+    ];
+
+    let score = 0;
+    let miss = 0;
+    let currentBin = "organic";
+    let currentWaste = null;
+    let wasteY = 0;
+    let gameOver = false;
+
+    function newWaste() {
+      const random = Math.floor(Math.random() * wastes.length);
+      currentWaste = wastes[random];
+      wasteY = 0;
+    }
+
+    function drawWaste() {
+      ctx.drawImage(currentWaste.img, canvas.width/2 - 25, wasteY, 50, 50);
+    }
+
+    function drawBin() {
+      let binImg;
+      if (currentBin === "organic") binImg = binOrganic;
+      else if (currentBin === "plastic") binImg = binPlastic;
+      else binImg = binPaper;
+
+      ctx.drawImage(binImg, canvas.width/2 - 40, canvas.height - 100, 80, 80);
+    }
+
+    function update() {
+      if (gameOver) return;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      drawWaste();
+      drawBin();
+
+      wasteY += 5; // slow drop speed
+
+      if (wasteY > canvas.height - 120) {
+        // check correct bin
+        if (currentBin === currentWaste.type) {
+          score++;
+        } else {
+          miss++;
+        }
+        document.getElementById("score").textContent = score;
+        document.getElementById("miss").textContent = miss;
+
+        if (miss >= 5) endGame();
+        else newWaste();
+      }
+      requestAnimationFrame(update);
+    }
+
+    // Switch bins
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "1") currentBin = "organic";
+      if (e.key === "2") currentBin = "plastic";
+      if (e.key === "3") currentBin = "paper";
+    });
+
+    function endGame() {
+      gameOver = true;
+      document.getElementById("finalScore").textContent = score;
+      document.getElementById("gameOver").style.display = "block";
+    }
+
+    function restartGame() {
+      score = 0;
+      miss = 0;
+      gameOver = false;
+      document.getElementById("score").textContent = 0;
+      document.getElementById("miss").textContent = 0;
+      document.getElementById("gameOver").style.display = "none";
+      newWaste();
+      update();
+    }
+
+    // Start Game
+    newWaste();
+    update();
+  </script>
+
+</body>
+</html>

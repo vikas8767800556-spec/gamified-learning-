@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Learn About Environment</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #7fe9a3, #57c6e1);
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    h1 {
+      font-size: 52px;
+      color: #065f46;
+      margin: 80px 0 20px;
+      text-shadow: 2px 2px 6px #ffffffcc;
+      animation: fadeInDown 1.2s ease-in-out;
+    }
+
+    .mascot {
+      font-size: 20px;
+      color: #1e293b;
+      background-color: rgba(255, 255, 255, 0.9);
+      padding: 16px 32px;
+      border-radius: 25px;
+      margin-bottom: 30px;
+      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
+      animation: float 3s ease-in-out infinite;
+      font-weight: 600;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+      100% { transform: translateY(0); }
+    }
+
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .topic-container {
+      display: flex;
+      gap: 35px;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding-bottom: 80px;
+      animation: fadeIn 1s ease-in;
+    }
+
+    .topic-card {
+      background: linear-gradient(160deg, #ffffff 30%, #e8ffe9 100%);
+      width: 260px;
+      height: 260px;
+      border-radius: 22px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      cursor: pointer;
+      transition: transform 0.35s, box-shadow 0.35s, background 0.4s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .topic-card::before {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      background: radial-gradient(circle at top, #a7f3d0 0%, transparent 70%);
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+
+    .topic-card:hover::before {
+      opacity: 1;
+    }
+
+    .topic-card:hover {
+      transform: translateY(-10px) scale(1.05);
+      box-shadow: 0 12px 25px rgba(0, 0, 0, 0.3);
+    }
+
+    .topic-card img {
+      width: 80px;
+      height: 80px;
+      margin-bottom: 14px;
+      border-radius: 14px;
+      object-fit: cover;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    }
+
+    .topic-card h2 {
+      font-size: 22px;
+      color: #065f46;
+      margin-bottom: 8px;
+    }
+
+    .topic-card p {
+      font-size: 15px;
+      color: #334155;
+      padding: 0 10px;
+    }
+
+    footer {
+      margin-top: auto;
+      color: #083344;
+      font-size: 18px;
+      padding: 25px;
+      text-align: center;
+      background-color: rgba(255, 255, 255, 0.6);
+      width: 100%;
+      box-shadow: 0 -4px 10px rgba(0,0,0,0.1);
+      font-weight: 500;
+    }
+
+    footer span {
+      color: #10b981;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="mascot">🦉 Hoot hoot! Ready to explore nature? Click a topic to begin your adventure!</div>
+  <h1>🌱 Let's Learn About Nature!</h1>
+
+  <div class="topic-container">
+    <div class="topic-card" onclick="location.href='/learn/water'">
+      <img src="/static/images/water.png" alt="Water Pollution">
+      <h2>💧 Water Pollution</h2>
+      <p>Discover how water gets polluted and how we can protect it.</p>
+    </div>
+
+    <div class="topic-card" onclick="location.href='/learn/air'">
+      <img src="/static/images/air.png" alt="Air Pollution">
+      <h2>🌬️ Air Pollution</h2>
+      <p>Learn about clean air and how pollution affects us.</p>
+    </div>
+
+    <div class="topic-card" onclick="location.href='/learn/rainwater'">
+      <img src="/static/images/rainwater.png" alt="Rainwater Harvesting">
+      <h2>🌧️ Rainwater Harvesting</h2>
+      <p>Explore how we can save rainwater and use it wisely.</p>
+    </div>
+
+    <div class="topic-card" onclick="location.href='/learn/plants'">
+      <img src="/static/images/plants.png" alt="Plants and Trees">
+      <h2>🌿 Plants & Trees</h2>
+      <p>Understand how greenery helps our planet stay healthy.</p>
+    </div>
+
+    <div class="topic-card" onclick="location.href='/learn/recycling'">
+      <img src="/static/images/recycle.png" alt="Recycling">
+      <h2>♻️ Recycling</h2>
+      <p>Find out how we can reuse things and reduce waste.</p>
+    </div>
+  </div>
+
+  <footer>✨ Keep exploring, little <span>hero</span>! Nature needs you! 🌍</footer>
+
+</body>
+</html>

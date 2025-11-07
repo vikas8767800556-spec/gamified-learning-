@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>💧 Learn About Rainwater Harvesting</title>
+<style>
+  body {
+    font-family: "Poppins", sans-serif;
+    background: linear-gradient(135deg, #89f7fe, #66a6ff);
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    overflow-x: hidden;
+  }
+
+  h1 {
+    color: #01579b;
+    margin-top: 30px;
+    font-size: 38px;
+    text-shadow: 2px 2px 5px rgba(255,255,255,0.8);
+  }
+
+  #content {
+    margin-top: 20px;
+  }
+
+  .item {
+    display: inline-block;
+    margin: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+
+  .item img {
+    width: 180px;
+    height: 180px;
+    border-radius: 20px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+  }
+
+  .item:hover {
+    transform: scale(1.1);
+  }
+
+  #fact-box {
+    margin-top: 25px;
+    font-size: 22px;
+    font-weight: 600;
+    color: #01579b;
+    background: #e1f5fe;
+    display: inline-block;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    min-width: 300px;
+  }
+
+  #mascot-message {
+    margin-top: 10px;
+    font-size: 18px;
+    color: #0277bd;
+    font-weight: 500;
+  }
+
+  #info-box {
+    margin-top: 30px;
+    font-size: 20px;
+    font-weight: 600;
+    color: #1b5e20;
+    background: #fff3e0;
+    display: inline-block;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    min-width: 320px;
+  }
+
+  footer {
+    margin-top: 40px;
+    color: #004d40;
+    font-weight: bold;
+  }
+
+  /* 💧 Side Info Boxes */
+  .side-info {
+    position: absolute;
+    top: 50px;
+    width: 170px;
+    background: #ffffffb3;
+    color: #01579b;
+    font-size: 18px;
+    font-weight: 500;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+    text-align: left;
+    line-height: 1.5;
+  }
+
+  #left-info {
+    left: 40px;
+  }
+
+  #right-info {
+    right: 40px;
+  }
+
+  @media (max-width: 900px) {
+    .side-info {
+      position: static;
+      width: auto;
+      margin: 20px;
+      text-align: center;
+    }
+  }
+</style>
+</head>
+<body>
+
+<h1>💧 Let’s Learn About Rainwater Harvesting!</h1>
+<p style="font-size:18px; color:#01579b;">Tap a picture to discover a fun fact!</p>
+
+<!-- 🌧 Left Info Box -->
+<div id="left-info" class="side-info">
+  💦 <b>Did You Know?</b><br>
+  - Rainwater harvesting helps recharge the groundwater.<br>
+  - It reduces water scarcity in summer.<br>
+  - Even small rooftops can collect hundreds of liters of rain!<br>
+  - Traditional wells and ponds were early forms of harvesting.
+</div>
+
+<div id="content">
+  <div class="item" onclick="showFact('tank')">
+    <img src="{{ url_for('static', filename='images/rain_tank.png') }}" alt="Rain Tank">
+  </div>
+  <div class="item" onclick="showFact('roof')">
+    <img src="{{ url_for('static', filename='images/roof_collection.png') }}" alt="Roof Collection">
+  </div>
+  <div class="item" onclick="showFact('filter')">
+    <img src="{{ url_for('static', filename='images/filter_system.png') }}" alt="Filter System">
+  </div>
+  <div class="item" onclick="showFact('plants')">
+    <img src="{{ url_for('static', filename='images/plants_water.png') }}" alt="Plants Watering">
+  </div>
+</div>
+
+<div id="fact-box">💧 Click on pictures to learn fun facts!</div>
+<div id="mascot-message"></div>
+
+<!-- ✅ Main Info Box -->
+<div id="info-box">
+  🌧 <strong>Rainwater Harvesting</strong> means collecting and storing rain for later use.  
+  It helps conserve fresh water, recharge wells, and prevent floods — a simple way to save our planet! 🌍
+</div>
+
+<!-- 🌿 Right Info Box -->
+<div id="right-info" class="side-info">
+  🌱 <b>How We Can Help:</b><br>
+  - Collect rainwater in tanks or buckets.<br>
+  - Install filters to keep stored water clean.<br>
+  - Use harvested water for gardens and cleaning.<br>
+  - Encourage schools and homes to set up rain systems.
+</div>
+
+<footer>💦 Save every drop — it’s precious!</footer>
+
+<!-- 🔊 Click Sound -->
+<audio id="clickSound" src="{{ url_for('static', filename='sounds/click.mp3') }}"></audio>
+
+<script>
+  function showFact(type) {
+    const facts = {
+      tank: "🚰 Rainwater tanks store water for daily use — simple and useful!",
+      roof: "🏠 Roofs can collect rainwater through pipes and gutters.",
+      filter: "🔧 Filters clean rainwater before storing it — making it safe!",
+      plants: "🌿 Plants love rainwater! It’s fresh and chemical-free."
+    };
+
+    const box = document.getElementById("fact-box");
+    const mascot = document.getElementById("mascot-message");
+    const clickSound = document.getElementById("clickSound");
+
+    clickSound.currentTime = 0;
+    clickSound.play().catch(() => {});
+
+    box.textContent = facts[type];
+    box.style.background = "#fff3e0";
+    box.style.color = "#d84315";
+
+    mascot.textContent = "🦉 Great! You learned something new!";
+
+    box.animate([
+      { transform: 'scale(1)' },
+      { transform: 'scale(1.1)' },
+      { transform: 'scale(1)' }
+    ], {
+      duration: 500,
+      iterations: 1
+    });
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>🌿 Learn About Plants & Trees</title>
+<style>
+  body {
+    font-family: "Poppins", sans-serif;
+    background: linear-gradient(135deg, #a8e063, #56ab2f);
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    overflow-x: hidden;
+  }
+
+  h1 {
+    color: #1b5e20;
+    margin-top: 30px;
+    font-size: 38px;
+    text-shadow: 2px 2px 5px rgba(255,255,255,0.8);
+  }
+
+  .page-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    margin: 40px 20px;
+    gap: 20px;
+  }
+
+  /* ✅ Left and right info boxes */
+  .side-info {
+    width: 22%;
+    background: rgba(255, 255, 255, 0.85);
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+    font-size: 17px;
+    color: #1b5e20;
+    line-height: 1.6;
+    font-weight: 500;
+  }
+
+  .side-info h3 {
+    color: #2e7d32;
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+
+  /* ✅ Main middle content */
+  .main-content {
+    width: 50%;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 25px;
+    padding: 30px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    animation: fadeIn 1.2s ease;
+  }
+
+  #content {
+    margin-top: 20px;
+  }
+
+  .item {
+    display: inline-block;
+    margin: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+
+  .item img {
+    width: 180px;
+    height: 180px;
+    border-radius: 20px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+  }
+
+  .item:hover {
+    transform: scale(1.1);
+  }
+
+  #fact-box {
+    margin-top: 25px;
+    font-size: 22px;
+    font-weight: 600;
+    color: #1b5e20;
+    background: #e8f5e9;
+    display: inline-block;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    min-width: 300px;
+  }
+
+  #mascot-message {
+    margin-top: 10px;
+    font-size: 18px;
+    color: #2e7d32;
+    font-weight: 500;
+  }
+
+  #info-box {
+    margin-top: 30px;
+    font-size: 20px;
+    font-weight: 600;
+    color: #33691e;
+    background: #fff3e0;
+    display: inline-block;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    min-width: 320px;
+  }
+
+  footer {
+    margin-top: 40px;
+    color: #004d40;
+    font-weight: bold;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+
+<h1>🌿 Let’s Learn About Plants & Trees!</h1>
+<p style="font-size:18px; color:#1b5e20;">Tap a picture to discover a fun fact!</p>
+
+<div class="page-container">
+
+  <!-- 🌱 Left Information Panel -->
+  <div class="side-info">
+    <h3>🌲 Why Trees Matter</h3>
+    <p>🌍 Trees absorb carbon dioxide and release oxygen — keeping our air fresh and breathable.</p>
+    <p>💧 Their roots hold soil and prevent floods and erosion.</p>
+    <p>🌡 Trees cool cities by up to 8°C during summer.</p>
+    <p>🌸 They make our world colorful, peaceful, and full of life.</p>
+  </div>
+
+  <!-- 🌳 Main Content -->
+  <div class="main-content">
+    <div id="content">
+      <div class="item" onclick="showFact('oxygen')">
+        <img src="{{ url_for('static', filename='images/tree_oxygen.png') }}" alt="Oxygen Tree">
+      </div>
+      <div class="item" onclick="showFact('shade')">
+        <img src="{{ url_for('static', filename='images/tree_shade.png') }}" alt="Tree Shade">
+      </div>
+      <div class="item" onclick="showFact('animals')">
+        <img src="{{ url_for('static', filename='images/tree_animals.png') }}" alt="Animals in Trees">
+      </div>
+      <div class="item" onclick="showFact('fruits')">
+        <img src="{{ url_for('static', filename='images/tree_fruits.png') }}" alt="Fruits Tree">
+      </div>
+    </div>
+
+    <div id="fact-box">🌳 Click on pictures to learn fun facts about trees!</div>
+    <div id="mascot-message"></div>
+
+    <div id="info-box">
+      🌲 <strong>Plants and Trees</strong> are the green heart of our planet.  
+      They give us oxygen, food, shade, and shelter for animals.  
+      Trees help cool the Earth, clean the air, and prevent soil erosion.  
+      🌿 Let’s grow more trees to make our planet happy and healthy! 🌍
+    </div>
+  </div>
+
+  <!-- 🌻 Right Information Panel -->
+  <div class="side-info">
+    <h3>🌿 How You Can Help</h3>
+    <p>✅ Plant at least one tree every year.</p>
+    <p>🚯 Never cut down trees unnecessarily.</p>
+    <p>♻ Recycle paper and use cloth bags to save forests.</p>
+    <p>💧 Water plants regularly and take care of your surroundings.</p>
+    <p>👧🏽 Encourage friends to join tree plantation drives!</p>
+  </div>
+
+</div>
+
+<footer>💚 Trees are life — plant one today!</footer>
+
+<!-- 🔊 Click sound -->
+<audio id="clickSound" src="{{ url_for('static', filename='sounds/click.mp3') }}"></audio>
+
+<script>
+  function showFact(type) {
+    const facts = {
+      oxygen: "🌬 Trees make oxygen for us to breathe — one big tree can support 4 people!",
+      shade: "🌞 Trees give us cool shade and lower city temperatures.",
+      animals: "🐿 Trees are homes for birds, squirrels, and insects.",
+      fruits: "🍎 Trees provide fruits, nuts, and flowers — full of nutrition and beauty!"
+    };
+
+    const box = document.getElementById("fact-box");
+    const mascot = document.getElementById("mascot-message");
+    const clickSound = document.getElementById("clickSound");
+
+    clickSound.currentTime = 0;
+    clickSound.play().catch(() => {});
+
+    box.textContent = facts[type];
+    box.style.background = "#f1f8e9";
+    box.style.color = "#33691e";
+
+    mascot.textContent = "🌱 Great! You just learned something new!";
+
+    box.animate([
+      { transform: 'scale(1)' },
+      { transform: 'scale(1.1)' },
+      { transform: 'scale(1)' }
+    ], {
+      duration: 500,
+      iterations: 1
+    });
+  }
+</script>
+</body>
+</html>

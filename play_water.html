@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>💧 Water Saver Challenge</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to top, #aee1f9, #ffffff);
+      text-align: center;
+    }
+
+    h1 {
+      color: #0277bd;
+      text-shadow: 2px 2px #b3e5fc;
+      margin-top: 10px;
+    }
+
+    #scoreboard {
+      font-size: 22px;
+      font-weight: bold;
+      color: #01579b;
+      margin-top: 5px;
+    }
+
+    canvas {
+      background: url('{{ url_for("static", filename="images/background.png") }}') no-repeat center;
+      background-size: cover;
+      display: block;
+      margin: 15px auto;
+      border: 4px solid #0288d1;
+      border-radius: 10px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+    }
+
+    #game-over {
+      display: none;
+      position: absolute;
+      top: 40%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(255,255,255,0.9);
+      padding: 25px 40px;
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    }
+
+    button {
+      background-color: #0288d1;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 18px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background-color: #01579b;
+    }
+
+    #level {
+      font-size: 20px;
+      color: #00796b;
+      margin-top: 5px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>💧 Save Every Drop!</h1>
+  <div id="scoreboard">
+    Score: <span id="score">0</span> |
+    Lives: <span id="lives">3</span>
+  </div>
+  <div id="level">Level: <span id="levelNum">1</span></div>
+
+  <canvas id="gameCanvas" width="600" height="400"></canvas>
+
+  <div id="game-over">
+    <h2>Game Over 😢</h2>
+    <p>Your Final Score: <span id="finalScore"></span></p>
+    <button onclick="restartGame()">Play Again</button>
+  </div>
+
+  <script>
+    const canvas = document.getElementById("gameCanvas");
+    const ctx = canvas.getContext("2d");
+
+    const bucketImg = new Image();
+    bucketImg.src = "{{ url_for('static', filename='images/bucket.png') }}";
+
+    const dropImg = new Image();
+    dropImg.src = "{{ url_for('static', filename='images/drop1.png') }}";
+
+    const splashSound = new Audio("{{ url_for('static', filename='sounds/splash.mp3') }}");
+    const bgMusic = new Audio("{{ url_for('static', filename='sounds/bg_music.mp3') }}");
+    bgMusic.loop = true;
+    bgMusic.volume = 0.5;
+    bgMusic.play().catch(() => console.log("Autoplay blocked — click to start sound."));
+
+    let bucket = { x: 250, y: 340, width: 80, height: 60, speed: 15 };
+    let drops = [];
+    let score = 0;
+    let lives = 3;
+    let level = 1;
+    let dropSpeed = 2.5;
+    let spawnRate = 1000;
+    let gameOver = false;
+
+    function createDrop() {
+      const x = Math.random() * (canvas.width - 30);
+      drops.push({ x: x, y: 0, speed: dropSpeed + Math.random() * 1.5 });
+    }
+
+    function drawBucket() {
+      ctx.drawImage(bucketImg, bucket.x, bucket.y, bucket.width, bucket.height);
+    }
+
+    function drawDrops() {
+      for (let d of drops) {
+        ctx.drawImage(dropImg, d.x, d.y, 30, 40);
+      }
+    }
+
+    function updateDrops() {
+      for (let i = 0; i < drops.length; i++) {
+        drops[i].y += drops[i].speed;
+
+        if (
+          drops[i].y + 30 >= bucket.y &&
+          drops[i].x + 30 > bucket.x &&
+          drops[i].x < bucket.x + bucket.width
+        ) {
+          score++;
+          splashSound.currentTime = 0;
+          splashSound.play();
+          drops.splice(i, 1);
+          i--;
+          document.getElementById("score").textContent = score;
+
+          if (score % 10 === 0) levelUp();
+        } else if (drops[i].y > canvas.height) {
+          drops.splice(i, 1);
+          i--;
+          lives--;
+          document.getElementById("lives").textContent = lives;
+          if (lives <= 0) endGame();
+        }
+      }
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      drawBucket();
+      drawDrops();
+    }
+
+    function update() {
+      if (!gameOver) {
+        updateDrops();
+        draw();
+        requestAnimationFrame(update);
+      }
+    }
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowLeft" && bucket.x > 0) bucket.x -= bucket.speed;
+      if (e.key === "ArrowRight" && bucket.x < canvas.width - bucket.width)
+        bucket.x += bucket.speed;
+    });
+
+    function dropLoop() {
+      if (!gameOver) {
+        createDrop();
+        setTimeout(dropLoop, spawnRate);
+      }
+    }
+
+    function levelUp() {
+      level++;
+      dropSpeed += 0.5;
+      if (spawnRate > 500) spawnRate -= 80;
+      document.getElementById("levelNum").textContent = level;
+    }
+
+    function endGame() {
+      gameOver = true;
+      bgMusic.pause();
+      document.getElementById("finalScore").textContent = score;
+      document.getElementById("game-over").style.display = "block";
+    }
+
+    function restartGame() {
+      score = 0;
+      lives = 3;
+      level = 1;
+      dropSpeed = 3;
+      spawnRate = 1300;
+      drops = [];
+      bucket.x = 50;
+      gameOver = false;
+      bgMusic.currentTime = 0;
+      bgMusic.play();
+      document.getElementById("score").textContent = score;
+      document.getElementById("lives").textContent = lives;
+      document.getElementById("levelNum").textContent = level;
+      document.getElementById("game-over").style.display = "none";
+      dropLoop();
+      update();
+    }
+
+    // Start Game
+    dropLoop();
+    update();
+  </script>
+</body>
+</html>

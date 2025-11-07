@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>♻ Learn About Recycling</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+  body {
+    font-family: "Poppins", sans-serif;
+    background: linear-gradient(135deg, #d4fc79, #96e6a1);
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    overflow-x: hidden;
+  }
+
+  .page-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin: 0 40px;
+  }
+
+  h1 {
+    color: #1b5e20;
+    margin-top: 30px;
+    font-size: 38px;
+    text-shadow: 2px 2px 5px rgba(255,255,255,0.8);
+  }
+
+  #content {
+    margin-top: 20px;
+  }
+
+  .item {
+    display: inline-block;
+    margin: 20px;
+    cursor: pointer;
+    transition: 0.15s;
+    outline: none;
+  }
+
+  .item img {
+    width: 198px;
+    height: 198px;
+    border-radius: 20px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+    display: block;
+  }
+
+  .item:focus,
+  .item:hover {
+    transform: scale(1.06);
+  }
+
+  #fact-box {
+    margin-top: 25px;
+    font-size: 22px;
+    font-weight: 600;
+    color: #2e7d32;
+    background: #e8f5e9;
+    display: inline-block;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    min-width: 300px;
+  }
+
+  #mascot-message {
+    margin-top: 10px;
+    font-size: 18px;
+    color: #388e3c;
+    font-weight: 500;
+  }
+
+  #info-box {
+    margin-top: 30px;
+    font-size: 20px;
+    font-weight: 600;
+    color: #1b5e20;
+    background: #fff3e0;
+    display: inline-block;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    min-width: 320px;
+  }
+
+  .side-info {
+    width: 20%;
+    background: #e8f5e9;
+    border-radius: 20px;
+    padding: 20px;
+    margin-top: -100px; /* ✅ moved higher (was 40px) */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    color: #1b5e20;
+    font-size: 16px;
+    line-height: 1.5;
+  }
+
+  footer {
+    margin-top: 40px;
+    color: #004d40;
+    font-weight: bold;
+  }
+
+  @media (max-width: 900px) {
+    .page-container {
+      flex-direction: column;
+      align-items: center;
+    }
+    .side-info {
+      width: 80%;
+      margin: 15px 0;
+    }
+  }
+</style>
+</head>
+<body>
+
+<h1>♻ Learn About Recycling!</h1>
+<p style="font-size:18px; color:#1b5e20;">Tap or press Enter/Space on a picture to learn cool recycling facts!</p>
+
+<div class="page-container">
+  <!-- Left Information Panel -->
+  <div class="side-info">
+    <h3>🌿 Why Recycling Matters</h3>
+    <p>🌍 Recycling helps save natural resources like trees, water, and minerals.</p>
+    <p>⚡ It reduces the energy needed to make new materials.</p>
+    <p>🚯 Recycling keeps garbage out of landfills and oceans.</p>
+  </div>
+
+  <!-- Main Content -->
+  <div>
+    <div id="content" role="list">
+      <div class="item" role="button" tabindex="0" data-key="plastic" onclick="handleClick('plastic')" onkeydown="handleKey(event,'plastic')">
+        <img src="{{ url_for('static', filename='images/plastic_recycle.png') }}" alt="Plastic Recycling">
+      </div>
+      <div class="item" role="button" tabindex="0" data-key="paper" onclick="handleClick('paper')" onkeydown="handleKey(event,'paper')">
+        <img src="{{ url_for('static', filename='images/paper_recycle.png') }}" alt="Paper Recycling">
+      </div>
+      <div class="item" role="button" tabindex="0" data-key="bins" onclick="handleClick('bins')" onkeydown="handleKey(event,'bins')">
+        <img src="{{ url_for('static', filename='images/recycle_bins.png') }}" alt="Recycling Bins">
+      </div>
+      <div class="item" role="button" tabindex="0" data-key="reuse" onclick="handleClick('reuse')" onkeydown="handleKey(event,'reuse')">
+        <img src="{{ url_for('static', filename='images/reuse_items.png') }}" alt="Reuse Items">
+      </div>
+    </div>
+
+    <div id="fact-box" aria-live="polite">👉 Click on pictures to explore recycling facts!</div>
+    <div id="mascot-message" aria-hidden="true"></div>
+
+    <div id="info-box">
+      ♻ <strong>Recycling</strong> means turning old things into new!  
+      It saves energy, reduces waste, and keeps our planet green.  
+      Always remember: <b>Reduce, Reuse, Recycle!</b> 🌍
+    </div>
+  </div>
+
+  <!-- Right Information Panel -->
+  <div class="side-info">
+    <h3>🔁 Smart Recycling Tips</h3>
+    <p>✅ Rinse containers before recycling them.</p>
+    <p>🚫 Don’t mix food waste with recyclables.</p>
+    <p>📦 Flatten cardboard boxes to save space.</p>
+    <p>🗑 Check local recycling rules — they may differ!</p>
+  </div>
+</div>
+
+<footer>🌿 Let’s make Earth cleaner together!</footer>
+
+<audio id="clickSound" src="{{ url_for('static', filename='sounds/click.mp3') }}" preload="auto"></audio>
+
+<script>
+  const facts = {
+    plastic: "🧴 Plastic bottles can be recycled into clothes or bags!",
+    paper: "📄 Recycling one ton of paper saves 17 trees!",
+    bins: "🗑 Always use different bins for dry and wet waste!",
+    reuse: "🔁 Reusing old things reduces the need for new ones!"
+  };
+
+  function playClickSound() {
+    const s = document.getElementById('clickSound');
+    if (!s) return;
+    s.currentTime = 0;
+    s.play().catch(() => {});
+  }
+
+  function showFactText(key) {
+    const box = document.getElementById('fact-box');
+    const mascot = document.getElementById('mascot-message');
+    const txt = facts[key] || "🌍 Learn and protect our planet!";
+    box.textContent = txt;
+    box.style.background = "#fff3e0";
+    box.style.color = "#d84315";
+    mascot.textContent = "🌎 Smart choice for a better planet!";
+    box.animate(
+      [{ transform: 'scale(1)' }, { transform: 'scale(1.06)' }, { transform: 'scale(1)' }],
+      { duration: 420, iterations: 1 }
+    );
+  }
+
+  function handleClick(key){
+    playClickSound();
+    showFactText(key);
+  }
+
+  function handleKey(e, key){
+    if(e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar'){
+      e.preventDefault();
+      handleClick(key);
+    }
+  }
+</script>
+
+</body>
+</html>

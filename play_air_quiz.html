@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>🌫️ Air Pollution Quiz</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #89f7fe, #66a6ff);
+      text-align: center;
+      padding: 30px;
+    }
+    h1 {
+      color: #01579b;
+    }
+    .question-box {
+      background: white;
+      border-radius: 15px;
+      padding: 20px;
+      width: 60%;
+      margin: 20px auto;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+    button {
+      background-color: #0288d1;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      margin-top: 15px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    button:hover {
+      background-color: #01579b;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🌫️ Air Pollution Awareness Quiz</h1>
+  <div id="quiz-container"></div>
+  <button id="nextBtn">Next</button>
+  <h2 id="result"></h2>
+
+  <script>
+    const quizData = [
+      { question: "1️⃣ What is the main cause of air pollution?",
+        options: ["Deforestation", "Vehicle emissions", "Overfishing", "None of these"],
+        answer: "Vehicle emissions" },
+      { question: "2️⃣ Which gas is most responsible for the greenhouse effect?",
+        options: ["Oxygen", "Carbon dioxide", "Nitrogen", "Helium"],
+        answer: "Carbon dioxide" },
+      { question: "3️⃣ Which of these is a natural source of air pollution?",
+        options: ["Volcanic eruptions", "Factories", "Cars", "Plastic burning"],
+        answer: "Volcanic eruptions" },
+      { question: "4️⃣ What helps reduce air pollution?",
+        options: ["Planting trees", "Using more cars", "Burning trash", "Deforestation"],
+        answer: "Planting trees" },
+      { question: "5️⃣ Which device controls emissions from vehicles?",
+        options: ["Catalytic converter", "Air purifier", "Engine cleaner", "Turbocharger"],
+        answer: "Catalytic converter" }
+    ];
+
+    let current = 0;
+    let score = 0;
+    const container = document.getElementById("quiz-container");
+    const result = document.getElementById("result");
+
+    function loadQuestion() {
+      if (current >= quizData.length) {
+        container.innerHTML = "";
+        document.getElementById("nextBtn").style.display = "none";
+        result.textContent = `🎉 You scored ${score} / ${quizData.length}!`;
+        return;
+      }
+
+      const q = quizData[current];
+      container.innerHTML = `
+        <div class='question-box'>
+          <h2>${q.question}</h2>
+          ${q.options.map(o => `<p><input type='radio' name='option' value='${o}'> ${o}</p>`).join("")}
+        </div>
+      `;
+    }
+
+    document.getElementById("nextBtn").addEventListener("click", () => {
+      const selected = document.querySelector("input[name='option']:checked");
+      if (selected && selected.value === quizData[current].answer) score++;
+      current++;
+      loadQuestion();
+    });
+
+    loadQuestion();
+  </script>
+
+</body>
+</html>
